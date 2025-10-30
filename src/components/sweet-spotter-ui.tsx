@@ -311,7 +311,7 @@ export function SweetSpotterUI() {
           <CardDescription className="text-muted-foreground pt-2">
             Upload a photo to find out!
             <br />
-            and make sure you have your volume turned up
+            we recommend you have your phone volume turned up
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
