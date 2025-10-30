@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 const subtitlesData = [
-  { text: "Hang on a minute, is this what I think it is?", duration: 3700 },
+  { text: "Hang on a second, is this what I think it is?", duration: 3700 },
   { text: "Is this a, is this a sweet treat?,", duration: 3300 },
   { text: "because it looks like a sweet treat", duration: 2200 },
   { text: "and it smells like the sweet treat.", duration: 3100 },
