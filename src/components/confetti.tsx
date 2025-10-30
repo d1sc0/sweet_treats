@@ -28,7 +28,7 @@ const Confetti = () => {
     }, []);
 
     return (
-        <div className="fixed inset-0 w-full h-full z-50 pointer-events-none">
+        <div className="fixed inset-0 w-full h-full z-50 pointer-events-none overflow-hidden">
             {pieces.map(p => <ConfettiPiece key={p.id} {...p} />)}
         </div>
     );
