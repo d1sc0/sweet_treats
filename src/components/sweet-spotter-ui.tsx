@@ -311,7 +311,7 @@ export function SweetSpotterUI() {
               </div>
             )}
             {isAwaitingResult && (
-              <div className="flex flex-col items-center justify-center p-4">
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
                   <Cookie className="w-12 h-12 animate-spin text-primary mb-4" />
                   {currentSubtitle && (
                       <p className="text-lg text-white font-semibold bg-black/50 p-2 rounded-md text-center">
@@ -366,7 +366,7 @@ export function SweetSpotterUI() {
             </CardTitle>
           </div>
           <CardDescription className="text-muted-foreground pt-2">
-            Upload a photo to find out!
+            enable camera, show it your treat and tap analyse...or take a photo and upload
             <br />
             we recommend you have your phone volume turned up
           </CardDescription>
@@ -383,5 +383,3 @@ export function SweetSpotterUI() {
     </div>
   );
 }
-
-    
