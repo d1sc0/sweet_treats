@@ -362,8 +362,8 @@ export function SweetSpotterUI() {
     <div className="flex min-h-screen w-full items-center justify-center bg-transparent p-8">
       <Card className="w-full max-w-md mx-auto shadow-2xl shadow-primary/10 relative overflow-hidden">
         <CardHeader className="text-center pt-8">
-          <div className="flex justify-center items-center gap-2">
-            <Cookie className="w-8 h-8 text-primary-foreground/70" />
+          <div className="flex flex-col items-center gap-2">
+            <Cookie className="w-12 h-12 text-primary-foreground/70 mb-2" />
             <CardTitle className="text-3xl font-bold text-primary-foreground tracking-tight">
               Is this a sweet treat?
             </CardTitle>
@@ -383,5 +383,3 @@ export function SweetSpotterUI() {
     </div>
   );
 }
-
-    
