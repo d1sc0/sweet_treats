@@ -12,12 +12,13 @@ import { cn } from '@/lib/utils';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 const subtitlesData = [
-  { text: "Oh, what do we have here?", duration: 2000 },
-  { text: "My sensors are tingling...", duration: 2000 },
-  { text: "It's... it's beautiful!", duration: 3000 },
-  { text: "A masterpiece of confectionery art!", duration: 3000 },
-  { text: "The sugar levels are off the charts!", duration: 3000 },
-  { text: "This is definitely a sweet treat!", duration: 4000 },
+  { text: "Hang on a minute, is this what I think it is?", duration: 2700 },
+  { text: "Is this a, is this a sweet treat,", duration: 2300 },
+  { text: "because it looks like a sweet treat", duration: 2200 },
+  { text: "and it smells like the sweet treat.", duration: 3100 },
+  { text: "So I'm going to try it and just see if it is a sweet treat.", duration: 4800 },
+  { text: "It is. I knew it. It was a sweet treat the whole time.", duration: 3100 },
+  { text: "I knew it was a sweet treat, it was a great sweet treat too.", duration: 3400 },
 ];
 
 export function SweetSpotterUI() {
@@ -130,7 +131,7 @@ export function SweetSpotterUI() {
         setTimeout(() => {
           setResult(response);
           setIsAwaitingResult(false);
-        }, 17000);
+        }, 21600); // Sum of new durations
       } else {
         setResult(response);
         playFailSound();
@@ -380,5 +381,3 @@ export function SweetSpotterUI() {
     </div>
   );
 }
-
-    
