@@ -65,31 +65,9 @@ export function SweetSpotterUI() {
   }, [isCameraOpen, toast]);
 
   const playSuccessSound = useCallback(() => {
-    if (typeof window !== 'undefined' && window.AudioContext) {
-      const audioContext = new AudioContext();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-
-      oscillator.type = 'sine';
-      gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-
-      const now = audioContext.currentTime;
-      gainNode.gain.linearRampToValueAtTime(0.2, now + 0.05);
-      oscillator.frequency.setValueAtTime(523.25, now); // C5
-      
-      gainNode.gain.linearRampToValueAtTime(0.2, now + 0.15);
-      oscillator.frequency.setValueAtTime(659.25, now + 0.1); // E5
-
-      gainNode.gain.linearRampToValueAtTime(0.2, now + 0.25);
-      oscillator.frequency.setValueAtTime(783.99, now + 0.2); // G5
-      
-      gainNode.gain.linearRampToValueAtTime(0, now + 0.4);
-
-      oscillator.start();
-      oscillator.stop(now + 0.5);
+    if (typeof window !== 'undefined') {
+      const audio = new Audio('/success.m4a');
+      audio.play().catch(error => console.error("Failed to play audio:", error));
     }
   }, []);
 
