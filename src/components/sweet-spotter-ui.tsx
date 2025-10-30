@@ -11,6 +11,15 @@ import { checkForSweetTreat } from '@/app/actions';
 import { cn } from '@/lib/utils';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
+const subtitlesData = [
+  { text: "Oh, what do we have here?", duration: 2000 },
+  { text: "My sensors are tingling...", duration: 2000 },
+  { text: "It's... it's beautiful!", duration: 3000 },
+  { text: "A masterpiece of confectionery art!", duration: 3000 },
+  { text: "The sugar levels are off the charts!", duration: 3000 },
+  { text: "This is definitely a sweet treat!", duration: 4000 },
+];
+
 export function SweetSpotterUI() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,11 +28,30 @@ export function SweetSpotterUI() {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const [isAwaitingResult, setIsAwaitingResult] = useState(false);
+  const [currentSubtitle, setCurrentSubtitle] = useState('');
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (isAwaitingResult) {
+      let currentTimeout: NodeJS.Timeout;
+      let delay = 0;
+      
+      subtitlesData.forEach((subtitle, index) => {
+        delay += subtitle.duration;
+        currentTimeout = setTimeout(() => {
+          setCurrentSubtitle(subtitle.text);
+        }, delay - subtitle.duration);
+      });
+
+      return () => clearTimeout(currentTimeout);
+    } else {
+        setCurrentSubtitle('');
+    }
+  }, [isAwaitingResult]);
 
   useEffect(() => {
     if (isCameraOpen) {
@@ -186,6 +214,7 @@ export function SweetSpotterUI() {
     setIsCameraOpen(false);
     setHasCameraPermission(null);
     setIsAwaitingResult(false);
+    setCurrentSubtitle('');
     if(fileInputRef.current) {
         fileInputRef.current.value = "";
     }
@@ -277,8 +306,15 @@ export function SweetSpotterUI() {
               </div>
             )}
             {isAwaitingResult && (
-              <div className="flex flex-col items-center gap-2 text-white bg-black/50 p-4 rounded-lg">
-                <Cookie className="w-12 h-12 animate-spin text-primary" />
+              <div className="flex flex-col items-center justify-between p-4 h-full">
+                <div className="flex-grow flex items-center justify-center">
+                    <Cookie className="w-12 h-12 animate-spin text-primary" />
+                </div>
+                {currentSubtitle && (
+                    <p className="text-lg text-white font-semibold bg-black/50 p-2 rounded-md text-center">
+                        {currentSubtitle}
+                    </p>
+                )}
               </div>
             )}
             {!isLoading && !isAwaitingResult && result && (
@@ -344,3 +380,5 @@ export function SweetSpotterUI() {
     </div>
   );
 }
+
+    
