@@ -102,7 +102,7 @@ export function SweetSpotterUI() {
         setTimeout(() => {
           setResult(response);
           setIsAwaitingResult(false);
-        }, 15000);
+        }, 17000);
       } else {
         setResult(response);
         playFailSound();
