@@ -71,6 +71,13 @@ export function SweetSpotterUI() {
     }
   }, []);
 
+  const playFailSound = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      const audio = new Audio('/fail.mp3');
+      audio.play().catch(error => console.error("Failed to play audio:", error));
+    }
+  }, []);
+
   const runAnalysis = async (dataUrl: string) => {
     setIsLoading(true);
     setResult(null);
@@ -89,6 +96,8 @@ export function SweetSpotterUI() {
       setResult(response);
       if (response.isSweetTreat) {
         playSuccessSound();
+      } else {
+        playFailSound();
       }
     }
     setIsLoading(false);
