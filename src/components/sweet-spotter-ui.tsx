@@ -117,7 +117,7 @@ export function SweetSpotterUI() {
     // Warm up audio context on user interaction
     const playAndRewind = (audio: HTMLAudioElement | null) => {
         if (audio) {
-            audio.play();
+            audio.play().catch(e => console.error("Warm-up play failed", e));
             audio.pause();
             audio.currentTime = 0;
         }
@@ -369,7 +369,7 @@ export function SweetSpotterUI() {
             </CardTitle>
           </div>
           <CardDescription className="text-muted-foreground pt-2">
-            upload or take a photo of your treat to find out if it's sweet! we highly recommended to having your sound on!
+            upload or take a photo of your treat to find out if it's sweet! we highly recommended having your sound on!
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -383,3 +383,5 @@ export function SweetSpotterUI() {
     </div>
   );
 }
+
+    
