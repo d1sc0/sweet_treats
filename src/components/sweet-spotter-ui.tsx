@@ -114,18 +114,6 @@ export function SweetSpotterUI() {
     setResult(null);
     setImagePreview(dataUrl);
 
-    // Warm up audio context on user interaction
-    const playAndRewind = (audio: HTMLAudioElement | null) => {
-        if (audio) {
-            audio.play().catch(e => console.error("Warm-up play failed", e));
-            audio.pause();
-            audio.currentTime = 0;
-        }
-    }
-    playAndRewind(successAudioRef.current);
-    playAndRewind(failAudioRef.current);
-
-
     const response = await checkForSweetTreat(dataUrl);
     setIsLoading(false);
 
@@ -138,15 +126,15 @@ export function SweetSpotterUI() {
       setResult(null);
     } else {
       if (response.isSweetTreat) {
-        successAudioRef.current?.play().catch(error => console.error("Failed to play audio:", error));
+        successAudioRef.current?.play().catch(error => console.error("Failed to play success audio:", error));
         setIsAwaitingResult(true);
         setTimeout(() => {
           setResult(response);
           setIsAwaitingResult(false);
         }, totalSubtitlesDuration);
       } else {
+        failAudioRef.current?.play().catch(error => console.error("Failed to play fail audio:", error));
         setResult(response);
-        failAudioRef.current?.play().catch(error => console.error("Failed to play audio:", error));
       }
     }
   }
@@ -220,6 +208,22 @@ export function SweetSpotterUI() {
     }
   };
 
+  const initAudio = () => {
+    // This "warms up" the audio context on a user gesture.
+    const playAndRewind = (audio: HTMLAudioElement | null) => {
+        if (audio) {
+            audio.play().catch(e => console.error("Audio warm-up failed, this is expected on some browsers until a second user interaction.", e));
+            audio.pause();
+            audio.currentTime = 0;
+        }
+    }
+    playAndRewind(successAudioRef.current);
+    playAndRewind(failAudioRef.current);
+
+    // Open the file input.
+    fileInputRef.current?.click();
+  }
+
   const resetState = () => {
     setImagePreview(null);
     setResult(null);
@@ -247,7 +251,7 @@ export function SweetSpotterUI() {
             "relative flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200",
             isDragOver ? "border-primary bg-accent/20" : "border-input hover:border-primary/50"
           )}
-          onClick={() => fileInputRef.current?.click()}
+          onClick={initAudio}
           onDrop={handleDrop}
           onDragEnter={handleDragEvents}
           onDragLeave={handleDragEvents}
