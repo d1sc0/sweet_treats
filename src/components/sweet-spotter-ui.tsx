@@ -288,9 +288,8 @@ export function SweetSpotterUI() {
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md mx-auto shadow-2xl shadow-primary/10 relative overflow-hidden">
-        <div className="absolute top-3 left-3 flex items-center gap-2 text-sm font-semibold text-primary-foreground/70">
-          <Cookie className="w-5 h-5" />
-          <span>Sweet Treat Club</span>
+        <div className="absolute top-4 left-4 text-primary-foreground/70">
+          <Cookie className="w-8 h-8" />
         </div>
         <CardHeader className="text-center pt-12">
           <CardTitle className="text-3xl font-bold text-primary-foreground tracking-tight">
