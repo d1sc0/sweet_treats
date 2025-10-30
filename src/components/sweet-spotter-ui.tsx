@@ -18,6 +18,7 @@ export function SweetSpotterUI() {
   const [isDragOver, setIsDragOver] = useState(false);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
+  const [isAwaitingResult, setIsAwaitingResult] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -85,6 +86,7 @@ export function SweetSpotterUI() {
     setImagePreview(dataUrl);
 
     const response = await checkForSweetTreat(dataUrl);
+    setIsLoading(false);
 
     if ('error' in response) {
       toast({
@@ -94,14 +96,18 @@ export function SweetSpotterUI() {
       });
       setResult(null);
     } else {
-      setResult(response);
       if (response.isSweetTreat) {
         playSuccessSound();
+        setIsAwaitingResult(true);
+        setTimeout(() => {
+          setResult(response);
+          setIsAwaitingResult(false);
+        }, 15000);
       } else {
+        setResult(response);
         playFailSound();
       }
     }
-    setIsLoading(false);
   }
 
   const handleCapture = () => {
@@ -179,6 +185,7 @@ export function SweetSpotterUI() {
     setIsLoading(false);
     setIsCameraOpen(false);
     setHasCameraPermission(null);
+    setIsAwaitingResult(false);
     if(fileInputRef.current) {
         fileInputRef.current.value = "";
     }
@@ -269,7 +276,12 @@ export function SweetSpotterUI() {
                 <p>Analyzing...</p>
               </div>
             )}
-            {!isLoading && result && (
+            {isAwaitingResult && (
+              <div className="flex flex-col items-center gap-2 text-white bg-black/50 p-4 rounded-lg">
+                <Cookie className="w-12 h-12 animate-spin text-primary" />
+              </div>
+            )}
+            {!isLoading && !isAwaitingResult && result && (
               <div className="animate-sweet-appear text-center space-y-3 bg-black/60 backdrop-blur-sm p-6 rounded-lg">
                 {result.isSweetTreat ? (
                   <>
@@ -287,7 +299,7 @@ export function SweetSpotterUI() {
         </div>
       </div>
       
-      {!isLoading && result && (
+      {!isLoading && !isAwaitingResult && result && (
         <Button onClick={resetState} variant="outline" className="w-full h-auto py-3">
           <span className="text-center">
             {result.isSweetTreat ? (
