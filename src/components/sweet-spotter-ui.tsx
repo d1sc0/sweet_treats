@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useRef, useCallback, ChangeEvent, DragEvent, useEffect } from 'react';
@@ -288,7 +289,7 @@ export function SweetSpotterUI() {
       
       {!isLoading && (
         <Button onClick={resetState} variant="outline" className="w-full">
-          Check another image
+          click me to keep hunting for a delicious sweet treat
         </Button>
       )}
     </div>
@@ -317,3 +318,5 @@ export function SweetSpotterUI() {
     </div>
   );
 }
+
+    
