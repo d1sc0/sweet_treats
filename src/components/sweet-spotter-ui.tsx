@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useState, useRef, useCallback, ChangeEvent, DragEvent, useEffect } from 'react';
@@ -310,15 +311,13 @@ export function SweetSpotterUI() {
               </div>
             )}
             {isAwaitingResult && (
-              <div className="flex flex-col items-center justify-between p-4 h-full">
-                <div className="flex-grow flex items-center justify-center">
-                    <Cookie className="w-12 h-12 animate-spin text-primary" />
-                </div>
-                {currentSubtitle && (
-                    <p className="text-lg text-white font-semibold bg-black/50 p-2 rounded-md text-center">
-                        {currentSubtitle}
-                    </p>
-                )}
+              <div className="flex flex-col items-center justify-center p-4">
+                  <Cookie className="w-12 h-12 animate-spin text-primary mb-4" />
+                  {currentSubtitle && (
+                      <p className="text-lg text-white font-semibold bg-black/50 p-2 rounded-md text-center">
+                          {currentSubtitle}
+                      </p>
+                  )}
               </div>
             )}
             {!isLoading && !isAwaitingResult && result && (
