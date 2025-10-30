@@ -232,15 +232,6 @@ export function SweetSpotterUI() {
   
   const renderInitialState = () => (
     <div className="space-y-4">
-        <Button variant="default" className="w-full h-20 text-lg font-bold" onClick={() => setIsCameraOpen(true)}>
-            <Camera className="mr-2" />
-            Use your camera
-        </Button>
-        <div className="flex items-center space-x-2">
-            <div className="flex-1 border-t border-input" />
-            <span className="text-xs text-muted-foreground">OR</span>
-            <div className="flex-1 border-t border-input" />
-        </div>
         <div
           className={cn(
             "relative flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200",
