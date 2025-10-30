@@ -288,8 +288,11 @@ export function SweetSpotterUI() {
       </div>
       
       {!isLoading && (
-        <Button onClick={resetState} variant="outline" className="w-full">
-          click me to keep hunting for a delicious sweet treat
+        <Button onClick={resetState} variant="outline" className="w-full h-auto py-3">
+          <span className="text-center">
+            click me to keep hunting for a<br />
+            <strong className="font-bold">delicious sweet treat</strong>
+          </span>
         </Button>
       )}
     </div>
@@ -318,5 +321,3 @@ export function SweetSpotterUI() {
     </div>
   );
 }
-
-    
