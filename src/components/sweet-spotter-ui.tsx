@@ -114,9 +114,17 @@ export function SweetSpotterUI() {
     setResult(null);
     setImagePreview(dataUrl);
 
-    // Pre-play a silent audio to "warm up" the audio context on mobile
-    successAudioRef.current?.play().then(() => successAudioRef.current?.pause());
-    failAudioRef.current?.play().then(() => failAudioRef.current?.pause());
+    // Warm up audio context on user interaction
+    const playAndRewind = (audio: HTMLAudioElement | null) => {
+        if (audio) {
+            audio.play();
+            audio.pause();
+            audio.currentTime = 0;
+        }
+    }
+    playAndRewind(successAudioRef.current);
+    playAndRewind(failAudioRef.current);
+
 
     const response = await checkForSweetTreat(dataUrl);
     setIsLoading(false);
@@ -375,5 +383,3 @@ export function SweetSpotterUI() {
     </div>
   );
 }
-
-    
