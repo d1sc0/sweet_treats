@@ -4,7 +4,7 @@
 import { useState, useRef, useCallback, ChangeEvent, DragEvent, useEffect } from 'react';
 import Image from 'next/image';
 import { UploadCloud, Sparkles, Frown, Loader2, Camera, Zap, Cookie } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { checkForSweetTreat } from '@/app/actions';
@@ -319,6 +319,9 @@ export function SweetSpotterUI() {
           {!imagePreview && isCameraOpen && renderCameraState()}
           {imagePreview && renderAnalysisState()}
         </CardContent>
+        <CardFooter className="text-center text-xs text-muted-foreground justify-center">
+            <p>This crazy sweet AI prototype was imagined and prompted by disco-stu</p>
+        </CardFooter>
       </Card>
     </div>
   );
