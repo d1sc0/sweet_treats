@@ -133,10 +133,10 @@ export function SweetSpotterUI() {
       <Card className="w-full max-w-md mx-auto shadow-2xl shadow-primary/10">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold text-primary-foreground tracking-tight">
-            SweetSpotter
+            Is this a sweet treat?
           </CardTitle>
           <CardDescription className="text-muted-foreground pt-2">
-            Is it a sweet treat? Upload a photo to find out!
+            Upload a photo to find out!
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
