@@ -101,7 +101,7 @@ export function SweetSpotterUI() {
 
   const playSuccessSound = useCallback(() => {
     if (typeof window !== 'undefined') {
-      const audio = new Audio('/success.m4a');
+      const audio = new Audio('/success.mp3');
       audio.play().catch(error => console.error("Failed to play audio:", error));
     }
   }, []);
@@ -383,3 +383,5 @@ export function SweetSpotterUI() {
     </div>
   );
 }
+
+    
