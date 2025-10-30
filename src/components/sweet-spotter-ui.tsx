@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import { useState, useRef, useCallback, ChangeEvent, DragEvent, useEffect } from 'react';
@@ -43,10 +42,12 @@ export function SweetSpotterUI() {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      successAudioRef.current = new Audio('/success.mp3');
-      failAudioRef.current = new Audio('/fail.mp3');
-    }
+    // This creates the audio elements and assigns them to the refs.
+    // Setting preload="auto" hints the browser to start downloading the audio.
+    successAudioRef.current = new Audio('/success.mp3');
+    successAudioRef.current.preload = 'auto';
+    failAudioRef.current = new Audio('/fail.mp3');
+    failAudioRef.current.preload = 'auto';
   }, []);
 
   useEffect(() => {
@@ -374,3 +375,5 @@ export function SweetSpotterUI() {
     </div>
   );
 }
+
+    
