@@ -21,6 +21,9 @@ const subtitlesData = [
   { text: "I knew it was a sweet treat, it was a great sweet treat too.", duration: 3400 },
 ];
 
+const totalSubtitlesDuration = subtitlesData.reduce((acc, curr) => acc + curr.duration, 0);
+
+
 export function SweetSpotterUI() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +44,7 @@ export function SweetSpotterUI() {
       let currentTimeout: NodeJS.Timeout;
       let delay = 0;
       
-      subtitlesData.forEach((subtitle, index) => {
+      subtitlesData.forEach((subtitle) => {
         delay += subtitle.duration;
         currentTimeout = setTimeout(() => {
           setCurrentSubtitle(subtitle.text);
@@ -131,7 +134,7 @@ export function SweetSpotterUI() {
         setTimeout(() => {
           setResult(response);
           setIsAwaitingResult(false);
-        }, 21600); // Sum of new durations
+        }, totalSubtitlesDuration);
       } else {
         setResult(response);
         playFailSound();
@@ -381,3 +384,5 @@ export function SweetSpotterUI() {
     </div>
   );
 }
+
+    
