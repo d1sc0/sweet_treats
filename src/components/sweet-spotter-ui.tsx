@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useState, useRef, useCallback, ChangeEvent, DragEvent, useEffect } from 'react';
@@ -10,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { checkForSweetTreat } from '@/app/actions';
 import { cn } from '@/lib/utils';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import Confetti from '@/components/confetti';
 
 const subtitlesData = [
   { text: "Hang on a second, is this what I think it is?", duration: 3700 },
@@ -325,9 +327,10 @@ export function SweetSpotterUI() {
               </div>
             )}
             {!isLoading && !isAwaitingResult && result && (
-              <div className="animate-sweet-appear text-center space-y-3 bg-black/60 backdrop-blur-sm p-6 rounded-lg">
+              <div className="animate-sweet-appear text-center space-y-3 bg-black/60 backdrop-blur-sm p-6 rounded-lg w-full h-full flex flex-col justify-center items-center">
                 {result.isSweetTreat ? (
                   <>
+                    <Confetti />
                     <Sparkles className="w-12 h-12 text-chart-4 mx-auto" />
                     <p className="text-xl font-semibold text-white">A GREAT SWEET TREAT! Enjoy</p>
                   </>
@@ -384,5 +387,3 @@ export function SweetSpotterUI() {
     </div>
   );
 }
-
-    
