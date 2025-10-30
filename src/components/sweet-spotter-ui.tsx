@@ -269,7 +269,7 @@ export function SweetSpotterUI() {
                 ) : (
                   <>
                     <Frown className="w-12 h-12 text-slate-300 mx-auto" />
-                    <p className="text-xl font-semibold text-slate-200">No sweet treat found.</p>
+                    <p className="text-xl font-semibold text-slate-200">oh no sorry this is not a sweet treat!</p>
                   </>
                 )}
               </div>
