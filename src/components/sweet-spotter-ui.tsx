@@ -12,12 +12,12 @@ import { cn } from '@/lib/utils';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 const subtitlesData = [
-  { text: "Hang on a minute, is this what I think it is?", duration: 2700 },
-  { text: "Is this a, is this a sweet treat,", duration: 2300 },
+  { text: "Hang on a minute, is this what I think it is?", duration: 3700 },
+  { text: "Is this a, is this a sweet treat?,", duration: 3300 },
   { text: "because it looks like a sweet treat", duration: 2200 },
   { text: "and it smells like the sweet treat.", duration: 3100 },
-  { text: "So I'm going to try it and just see if it is a sweet treat.", duration: 4800 },
-  { text: "It is. I knew it. It was a sweet treat the whole time.", duration: 3100 },
+  { text: "So I'm going to try it and just see if it is a sweet treat.", duration: 6800 },
+  { text: "It is. I knew it. It was a sweet treat the whole time.", duration: 3400 },
   { text: "I knew it was a sweet treat, it was a great sweet treat too.", duration: 3400 },
 ];
 
@@ -384,5 +384,3 @@ export function SweetSpotterUI() {
     </div>
   );
 }
-
-    
