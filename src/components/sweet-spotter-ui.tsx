@@ -179,7 +179,7 @@ export function SweetSpotterUI() {
   
   const renderInitialState = () => (
     <div className="space-y-4">
-        <Button variant="default" className="w-full" onClick={() => setIsCameraOpen(true)}>
+        <Button variant="default" className="w-full h-20 text-lg font-bold" onClick={() => setIsCameraOpen(true)}>
             <Camera className="mr-2" />
             Use your camera
         </Button>
