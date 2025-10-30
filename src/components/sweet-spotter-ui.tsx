@@ -368,7 +368,7 @@ export function SweetSpotterUI() {
             </CardTitle>
           </div>
           <CardDescription className="text-muted-foreground pt-2">
-            enable your camera, show your treat and hit analyse or upload a photo of your treat. It's highly recommended to have your sound on!
+            upload or take a photo of your treat to find out if it's sweet! we highly recommended to having your sound on!
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -383,5 +383,3 @@ export function SweetSpotterUI() {
     </div>
   );
 }
-
-    
