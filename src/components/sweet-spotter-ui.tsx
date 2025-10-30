@@ -369,7 +369,7 @@ export function SweetSpotterUI() {
             </CardTitle>
           </div>
           <CardDescription className="text-muted-foreground pt-2">
-            upload or take a photo of your treat to find out if it's sweet! we highly recommended having your sound on!
+            upload or take a photo of your treat to find out if it's sweet! we highly recommend having your sound on!
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
