@@ -240,6 +240,51 @@ export function SweetSpotterUI() {
     </div>
   );
 
+  const renderAnalysisState = () => (
+    <div className="space-y-4">
+      <div className="relative aspect-square w-full overflow-hidden rounded-lg border">
+        {imagePreview && (
+          <Image
+            src={imagePreview}
+            alt="Uploaded treat"
+            fill
+            className="object-contain"
+          />
+        )}
+        
+        <div className="absolute inset-0 flex items-center justify-center">
+            {isLoading && (
+              <div className="flex flex-col items-center gap-2 text-white bg-black/50 p-4 rounded-lg animate-pulse">
+                <Loader2 className="w-8 h-8 animate-spin" />
+                <p>Analyzing...</p>
+              </div>
+            )}
+            {!isLoading && result && (
+              <div className="animate-sweet-appear text-center space-y-3 bg-black/60 backdrop-blur-sm p-6 rounded-lg">
+                {result.isSweetTreat ? (
+                  <>
+                    <Sparkles className="w-12 h-12 text-chart-4 mx-auto" />
+                    <p className="text-xl font-semibold text-white">Sweet treat detected!</p>
+                  </>
+                ) : (
+                  <>
+                    <Frown className="w-12 h-12 text-slate-300 mx-auto" />
+                    <p className="text-xl font-semibold text-slate-200">No sweet treat found.</p>
+                  </>
+                )}
+              </div>
+            )}
+        </div>
+      </div>
+      
+      {!isLoading && (
+        <Button onClick={resetState} variant="outline" className="w-full">
+          Check another image
+        </Button>
+      )}
+    </div>
+  );
+
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md mx-auto shadow-2xl shadow-primary/10">
@@ -254,49 +299,7 @@ export function SweetSpotterUI() {
         <CardContent className="space-y-6">
           {!imagePreview && !isCameraOpen && renderInitialState()}
           {!imagePreview && isCameraOpen && renderCameraState()}
-
-          {imagePreview && (
-            <div className="space-y-4">
-                <div className="relative aspect-square w-full overflow-hidden rounded-lg border">
-                    <Image
-                        src={imagePreview}
-                        alt="Uploaded treat"
-                        fill
-                        className="object-contain"
-                    />
-                </div>
-            </div>
-          )}
-          
-          <div className="h-24 flex items-center justify-center">
-            {isLoading && (
-              <div className="flex flex-col items-center gap-2 text-muted-foreground animate-pulse">
-                <Loader2 className="w-8 h-8 animate-spin" />
-                <p>Analyzing your image...</p>
-              </div>
-            )}
-            {!isLoading && result && (
-              <div className="animate-sweet-appear text-center space-y-3">
-                {result.isSweetTreat ? (
-                  <>
-                    <Sparkles className="w-12 h-12 text-chart-4 mx-auto" />
-                    <p className="text-xl font-semibold text-primary-foreground">Sweet treat detected!</p>
-                  </>
-                ) : (
-                  <>
-                    <Frown className="w-12 h-12 text-muted-foreground mx-auto" />
-                    <p className="text-xl font-semibold text-muted-foreground">No sweet treat found.</p>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-          
-          {imagePreview && !isLoading && (
-            <Button onClick={resetState} variant="outline" className="w-full">
-              Check another image
-            </Button>
-          )}
+          {imagePreview && renderAnalysisState()}
         </CardContent>
       </Card>
     </div>
