@@ -264,7 +264,7 @@ export function SweetSpotterUI() {
                 {result.isSweetTreat ? (
                   <>
                     <Sparkles className="w-12 h-12 text-chart-4 mx-auto" />
-                    <p className="text-xl font-semibold text-white">Sweet treat detected!</p>
+                    <p className="text-xl font-semibold text-white">it is, I knew it, it is a sweet treat!</p>
                   </>
                 ) : (
                   <>
