@@ -366,9 +366,7 @@ export function SweetSpotterUI() {
             </CardTitle>
           </div>
           <CardDescription className="text-muted-foreground pt-2">
-            enable camera, show it your treat and tap analyse...or take a photo and upload
-            <br />
-            we recommend you have your phone volume turned up
+            enable your camera, show your treat and hit analyse or upload a photo of your treat. It's highly recommended to have your sound on!
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
