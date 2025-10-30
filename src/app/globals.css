@@ -84,7 +84,7 @@ body {
   }
   body {
     @apply bg-background text-foreground;
-    background-image: url("/candy.svg");
+    background-image: url("/candy.jpg");
     background-repeat: repeat;
   }
 }
