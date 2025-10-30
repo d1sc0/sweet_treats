@@ -88,7 +88,7 @@ body {
     background-repeat: repeat;
   }
   .confetti-piece {
-    @apply absolute w-2 h-4 top-0 opacity-0;
+    @apply absolute w-2 h-4 top-0 left-0 opacity-0;
     animation: confetti-fall 5s linear infinite;
   }
 }

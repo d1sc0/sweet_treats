@@ -212,10 +212,10 @@ export function SweetSpotterUI() {
 
   const initAudio = () => {
     // This "warms up" the audio context on a user gesture.
-    if (successAudioRef.current?.paused) {
+    if (successAudioRef.current) {
         successAudioRef.current.load();
     }
-    if (failAudioRef.current?.paused) {
+    if (failAudioRef.current) {
         failAudioRef.current.load();
     }
     
@@ -330,7 +330,6 @@ export function SweetSpotterUI() {
               <div className="animate-sweet-appear text-center space-y-3 bg-black/60 backdrop-blur-sm p-6 rounded-lg w-full h-full flex flex-col justify-center items-center">
                 {result.isSweetTreat ? (
                   <>
-                    <Confetti />
                     <Sparkles className="w-12 h-12 text-chart-4 mx-auto" />
                     <p className="text-xl font-semibold text-white">A GREAT SWEET TREAT! Enjoy</p>
                   </>
@@ -364,6 +363,7 @@ export function SweetSpotterUI() {
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-transparent p-8">
+      {result?.isSweetTreat && <Confetti />}
       <Card className="w-full max-w-md mx-auto shadow-2xl shadow-primary/10 relative overflow-hidden">
         <CardHeader className="text-center pt-8">
           <div className="flex flex-col items-center gap-2">
