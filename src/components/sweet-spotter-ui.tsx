@@ -1,21 +1,68 @@
 "use client";
 
-import { useState, useRef, useCallback, ChangeEvent, DragEvent } from 'react';
+import { useState, useRef, useCallback, ChangeEvent, DragEvent, useEffect } from 'react';
 import Image from 'next/image';
-import { UploadCloud, Sparkles, Frown, Loader2 } from 'lucide-react';
+import { UploadCloud, Sparkles, Frown, Loader2, Camera, Circle, Zap } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { checkForSweetTreat } from '@/app/actions';
 import { cn } from '@/lib/utils';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 export function SweetSpotterUI() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<{ isSweetTreat: boolean } | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (isCameraOpen) {
+      const getCameraPermission = async () => {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            console.error('Camera API not available in this browser.');
+            setHasCameraPermission(false);
+            toast({
+              variant: 'destructive',
+              title: 'Camera Not Supported',
+              description: 'Your browser does not support camera access.',
+            });
+            return;
+        }
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          setHasCameraPermission(true);
+  
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          }
+        } catch (error) {
+          console.error('Error accessing camera:', error);
+          setHasCameraPermission(false);
+          toast({
+            variant: 'destructive',
+            title: 'Camera Access Denied',
+            description: 'Please enable camera permissions in your browser settings to use this feature.',
+          });
+        }
+      };
+  
+      getCameraPermission();
+
+      return () => {
+        if (videoRef.current && videoRef.current.srcObject) {
+            (videoRef.current.srcObject as MediaStream).getTracks().forEach(track => track.stop());
+        }
+      }
+    }
+  }, [isCameraOpen, toast]);
 
   const playSuccessSound = useCallback(() => {
     if (typeof window !== 'undefined' && window.AudioContext) {
@@ -46,6 +93,45 @@ export function SweetSpotterUI() {
     }
   }, []);
 
+  const runAnalysis = async (dataUrl: string) => {
+    setIsLoading(true);
+    setResult(null);
+    setImagePreview(dataUrl);
+
+    const response = await checkForSweetTreat(dataUrl);
+
+    if ('error' in response) {
+      toast({
+        variant: 'destructive',
+        title: 'Analysis Failed',
+        description: response.error,
+      });
+      setResult(null);
+    } else {
+      setResult(response);
+      if (response.isSweetTreat) {
+        playSuccessSound();
+      }
+    }
+    setIsLoading(false);
+  }
+
+  const handleCapture = () => {
+    if (videoRef.current && canvasRef.current) {
+        const video = videoRef.current;
+        const canvas = canvasRef.current;
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const context = canvas.getContext('2d');
+        if (context) {
+            context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+            const dataUrl = canvas.toDataURL('image/jpeg');
+            setIsCameraOpen(false);
+            runAnalysis(dataUrl);
+        }
+    }
+  }
+
   const handleAnalysis = async (file: File) => {
     if (!file.type.startsWith('image/')) {
       toast({
@@ -56,31 +142,11 @@ export function SweetSpotterUI() {
       return;
     }
 
-    setIsLoading(true);
-    setResult(null);
-
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = async () => {
       const dataUrl = reader.result as string;
-      setImagePreview(dataUrl);
-      
-      const response = await checkForSweetTreat(dataUrl);
-      
-      if ('error' in response) {
-        toast({
-          variant: 'destructive',
-          title: 'Analysis Failed',
-          description: response.error,
-        });
-        setResult(null);
-      } else {
-        setResult(response);
-        if (response.isSweetTreat) {
-          playSuccessSound();
-        }
-      }
-      setIsLoading(false);
+      runAnalysis(dataUrl);
     };
     reader.onerror = () => {
       toast({
@@ -123,10 +189,78 @@ export function SweetSpotterUI() {
     setImagePreview(null);
     setResult(null);
     setIsLoading(false);
+    setIsCameraOpen(false);
+    setHasCameraPermission(null);
     if(fileInputRef.current) {
         fileInputRef.current.value = "";
     }
+    if (videoRef.current && videoRef.current.srcObject) {
+        (videoRef.current.srcObject as MediaStream).getTracks().forEach(track => track.stop());
+    }
   };
+  
+  const renderInitialState = () => (
+    <div className="space-y-4">
+        <div
+          className={cn(
+            "relative flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200",
+            isDragOver ? "border-primary bg-accent/20" : "border-input hover:border-primary/50"
+          )}
+          onClick={() => fileInputRef.current?.click()}
+          onDrop={handleDrop}
+          onDragEnter={handleDragEvents}
+          onDragLeave={handleDragEvents}
+          onDragOver={handleDragEvents}
+        >
+          <UploadCloud className="w-12 h-12 text-muted-foreground" />
+          <p className="mt-4 text-sm text-muted-foreground">
+            <span className="font-semibold text-primary-foreground">Click to upload</span> or drag and drop
+          </p>
+          <p className="text-xs text-muted-foreground">PNG, JPG, WEBP, etc.</p>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={onFileChange}
+            disabled={isLoading}
+          />
+        </div>
+        <div className="flex items-center space-x-2">
+            <div className="flex-1 border-t border-input" />
+            <span className="text-xs text-muted-foreground">OR</span>
+            <div className="flex-1 border-t border-input" />
+        </div>
+        <Button variant="outline" className="w-full" onClick={() => setIsCameraOpen(true)}>
+            <Camera className="mr-2" />
+            Use your camera
+        </Button>
+    </div>
+  );
+
+  const renderCameraState = () => (
+    <div className="space-y-4">
+        <div className="relative aspect-video w-full overflow-hidden rounded-lg border bg-black">
+            <video ref={videoRef} className="w-full h-full object-cover" autoPlay playsInline muted />
+            <canvas ref={canvasRef} className="hidden" />
+        </div>
+        {hasCameraPermission === false && (
+            <Alert variant="destructive">
+                <AlertTitle>Camera Access Denied</AlertTitle>
+                <AlertDescription>
+                    Please allow camera access in your browser settings to use this feature. You may need to refresh the page after granting permission.
+                </AlertDescription>
+            </Alert>
+        )}
+        <Button onClick={handleCapture} disabled={!hasCameraPermission || isLoading} className="w-full">
+            <Zap className="mr-2"/>
+            Analyze Photo
+        </Button>
+        <Button onClick={resetState} variant="outline" className="w-full">
+              Cancel
+        </Button>
+    </div>
+  );
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-background p-4">
@@ -140,33 +274,8 @@ export function SweetSpotterUI() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {!imagePreview && (
-            <div
-              className={cn(
-                "relative flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200",
-                isDragOver ? "border-primary bg-accent/20" : "border-input hover:border-primary/50"
-              )}
-              onClick={() => fileInputRef.current?.click()}
-              onDrop={handleDrop}
-              onDragEnter={handleDragEvents}
-              onDragLeave={handleDragEvents}
-              onDragOver={handleDragEvents}
-            >
-              <UploadCloud className="w-12 h-12 text-muted-foreground" />
-              <p className="mt-4 text-sm text-muted-foreground">
-                <span className="font-semibold text-primary-foreground">Click to upload</span> or drag and drop
-              </p>
-              <p className="text-xs text-muted-foreground">PNG, JPG, WEBP, etc.</p>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={onFileChange}
-                disabled={isLoading}
-              />
-            </div>
-          )}
+          {!imagePreview && !isCameraOpen && renderInitialState()}
+          {!imagePreview && isCameraOpen && renderCameraState()}
 
           {imagePreview && (
             <div className="space-y-4">
