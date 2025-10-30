@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useState, useRef, useCallback, ChangeEvent, DragEvent, useEffect } from 'react';
@@ -245,7 +246,7 @@ export function SweetSpotterUI() {
         >
           <UploadCloud className="w-12 h-12 text-muted-foreground" />
           <p className="mt-4 text-sm text-muted-foreground">
-            <span className="font-semibold text-primary-foreground">Click to upload</span> or drag and drop
+            <span className="font-semibold text-primary-foreground">Tap here to take a photo or upload</span>
           </p>
           <p className="text-xs text-muted-foreground">PNG, JPG, WEBP, etc.</p>
           <input
@@ -363,8 +364,7 @@ export function SweetSpotterUI() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {!imagePreview && !isCameraOpen && renderInitialState()}
-          {!imagePreview && isCameraOpen && renderCameraState()}
+          {!imagePreview && renderInitialState()}
           {imagePreview && renderAnalysisState()}
         </CardContent>
         <CardFooter className="text-center text-xs text-muted-foreground justify-center">
