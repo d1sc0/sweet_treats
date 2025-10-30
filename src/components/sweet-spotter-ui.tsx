@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, ChangeEvent, DragEvent, useEffect } from 'react';
 import Image from 'next/image';
-import { UploadCloud, Sparkles, Frown, Loader2, Camera, Circle, Zap } from 'lucide-react';
+import { UploadCloud, Sparkles, Frown, Loader2, Camera, Zap, Cookie } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -287,8 +287,12 @@ export function SweetSpotterUI() {
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md mx-auto shadow-2xl shadow-primary/10">
-        <CardHeader className="text-center">
+      <Card className="w-full max-w-md mx-auto shadow-2xl shadow-primary/10 relative overflow-hidden">
+        <div className="absolute top-3 left-3 flex items-center gap-2 text-sm font-semibold text-primary-foreground/70">
+          <Cookie className="w-5 h-5" />
+          <span>Sweet Treat Club</span>
+        </div>
+        <CardHeader className="text-center pt-12">
           <CardTitle className="text-3xl font-bold text-primary-foreground tracking-tight">
             Is this a sweet treat?
           </CardTitle>
