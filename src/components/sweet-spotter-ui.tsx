@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import { useState, useRef, useCallback, ChangeEvent, DragEvent, useEffect } from 'react';
@@ -38,7 +37,16 @@ export function SweetSpotterUI() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const successAudioRef = useRef<HTMLAudioElement | null>(null);
+  const failAudioRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      successAudioRef.current = new Audio('/success.mp3');
+      failAudioRef.current = new Audio('/fail.mp3');
+    }
+  }, []);
 
   useEffect(() => {
     if (isAwaitingResult) {
@@ -99,24 +107,14 @@ export function SweetSpotterUI() {
     }
   }, [isCameraOpen, toast]);
 
-  const playSuccessSound = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      const audio = new Audio('/success.mp3');
-      audio.play().catch(error => console.error("Failed to play audio:", error));
-    }
-  }, []);
-
-  const playFailSound = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      const audio = new Audio('/fail.mp3');
-      audio.play().catch(error => console.error("Failed to play audio:", error));
-    }
-  }, []);
-
   const runAnalysis = async (dataUrl: string) => {
     setIsLoading(true);
     setResult(null);
     setImagePreview(dataUrl);
+
+    // Pre-play a silent audio to "warm up" the audio context on mobile
+    successAudioRef.current?.play().then(() => successAudioRef.current?.pause());
+    failAudioRef.current?.play().then(() => failAudioRef.current?.pause());
 
     const response = await checkForSweetTreat(dataUrl);
     setIsLoading(false);
@@ -130,7 +128,7 @@ export function SweetSpotterUI() {
       setResult(null);
     } else {
       if (response.isSweetTreat) {
-        playSuccessSound();
+        successAudioRef.current?.play().catch(error => console.error("Failed to play audio:", error));
         setIsAwaitingResult(true);
         setTimeout(() => {
           setResult(response);
@@ -138,7 +136,7 @@ export function SweetSpotterUI() {
         }, totalSubtitlesDuration);
       } else {
         setResult(response);
-        playFailSound();
+        failAudioRef.current?.play().catch(error => console.error("Failed to play audio:", error));
       }
     }
   }
@@ -226,6 +224,10 @@ export function SweetSpotterUI() {
     if (videoRef.current && videoRef.current.srcObject) {
         (videoRef.current.srcObject as MediaStream).getTracks().forEach(track => track.stop());
     }
+    successAudioRef.current?.pause();
+    if(successAudioRef.current) successAudioRef.current.currentTime = 0;
+    failAudioRef.current?.pause();
+    if(failAudioRef.current) failAudioRef.current.currentTime = 0;
   };
   
   const renderInitialState = () => (
@@ -381,3 +383,5 @@ export function SweetSpotterUI() {
     </div>
   );
 }
+
+    
