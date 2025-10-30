@@ -210,16 +210,13 @@ export function SweetSpotterUI() {
 
   const initAudio = () => {
     // This "warms up" the audio context on a user gesture.
-    const playAndRewind = (audio: HTMLAudioElement | null) => {
-        if (audio) {
-            audio.play().catch(e => console.error("Audio warm-up failed, this is expected on some browsers until a second user interaction.", e));
-            audio.pause();
-            audio.currentTime = 0;
-        }
+    if (successAudioRef.current?.paused) {
+        successAudioRef.current.load();
     }
-    playAndRewind(successAudioRef.current);
-    playAndRewind(failAudioRef.current);
-
+    if (failAudioRef.current?.paused) {
+        failAudioRef.current.load();
+    }
+    
     // Open the file input.
     fileInputRef.current?.click();
   }
@@ -387,3 +384,5 @@ export function SweetSpotterUI() {
     </div>
   );
 }
+
+    
