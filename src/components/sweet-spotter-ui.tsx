@@ -299,7 +299,7 @@ export function SweetSpotterUI() {
   );
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-background p-4">
+    <div className="flex min-h-screen w-full items-center justify-center bg-background p-8">
       <Card className="w-full max-w-md mx-auto shadow-2xl shadow-primary/10 relative overflow-hidden">
         <CardHeader className="text-center pt-8">
           <div className="flex justify-center items-center gap-2">
