@@ -1,7 +1,5 @@
-# Firebase Studio
+# Sweet Treats App
 
-This is a NextJS starter in Firebase Studio.
-
-To get started, take a look at src/app/page.tsx.
+A small NextJS prototype app, built using firebase AI prototyping studio. 
 
 To run locally npx next start
